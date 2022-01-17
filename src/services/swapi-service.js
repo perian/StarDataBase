@@ -13,28 +13,26 @@ export default class SwapiService {
 
   async getAllPeople() {
     const res = await this.getResource(`people/`);
-
-    return res.results.map(this._transformPerson);;
+    return res.results.map(this._transformPerson);
   }
 
   async getAllStarships() {
     const res = await this.getResource(`starships/`);
-    return res.results.map(this._transformStarship);;
+    return res.results.map(this._transformStarship);
   }
 
   async getAllPlanets() {
     const res = await this.getResource(`planets/`);
-    console.log(this._transformPlanet)
     return res.results.map(this._transformPlanet);
   }
 
   async getPerson(id) {
-    const people = this.getResource(`people/${id}/`);
+    const people = await this.getResource(`people/${id}/`);
     return this._transformPerson(people);
   }
 
   async getStarship(id) {
-    const starship = this.getResource(`starships/${id}/`);
+    const starship = await this.getResource(`starships/${id}/`);
     return this._transformStarship(starship);
   }
 
@@ -48,31 +46,31 @@ export default class SwapiService {
     return item.url.match(idRegExp)[1];
   }
 
-  _transformPerson(person) {
+  _transformPerson = (person) => {
     return {
       id: this._extractId(person),
       name: person.name,
       gender: person.gender,
-      birthYear: person.birthYear,
-      eyeColor: person.eyeColor
+      birthYear: person.birth_year,
+      eyeColor: person.eye_color
     }
   }
 
-  _transformStarship(starship) {
+  _transformStarship = (starship) => {
     return {
       id: this._extractId(starship),
       name: starship.name,
       model: starship.model,
       manufacturer: starship.manufacturer,
-      costInCredits: starship.costInCredits,
+      costInCredits: starship.cost_in_credits,
       length: starship.length,
       crew: starship.crew,
       passengers: starship.passengers,
-      cargoCapacity: starship.cargoCapacity
+      cargoCapacity: starship.cargo_capacity
     }
   }
   
-  _transformPlanet(planet) {
+  _transformPlanet = (planet) => {
     return {
       id: this._extractId(planet),
       name: planet.name,
